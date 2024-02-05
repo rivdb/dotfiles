@@ -29,7 +29,7 @@ exec --no-startup-id /usr/bin/gnome-keyring-daemon --start --components=pkcs11,s
 
 
 # terminal
-exec --no-startup-id alacritty
+exec --no-startup-id kitty
 
 # polybar
 exec_always --no-startup-id $HOME/.config/polybar/launch.sh
@@ -68,7 +68,7 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # start a terminal
-bindsym $mod+Return exec alacritty
+bindsym $mod+Return exec kitty
 
 
 # kill focused window
@@ -95,7 +95,7 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # screenshot key
-bindsym Print exec ~/.config/i3/scripts/screenshot.sh
+bindsym Print exec flameshot gui 
 
 # move focused window
 bindsym $mod+Shift+j move left
@@ -173,8 +173,8 @@ gaps inner $inner_gaps
 gaps outer $outer_gaps
 
 # bind to chan e screen brightness
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +10%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 10%-
 
 
 # move focused container to workspace
@@ -240,4 +240,4 @@ for_window [class="^.*"] border pixel 0
 for_window [title="Library"] floating enable
 
 # wallpaper
-exec_always feh --bg-fill ~/Pictures/Wallpapers/mountainscene.jpeg
+exec_always feh --bg-fill ~/Pictures/Wallpapers/valleyfog.jpeg
