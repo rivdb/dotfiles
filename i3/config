@@ -219,15 +219,11 @@ mode "resize" {
 bindsym $mod+r mode "resize" 
 
 # Customize colors      border     backgr.     text       indicatr.     child_bordr. (border color)
-client.focused          #000000    #ebdbb2     #ebdbb2    #b8bb26       #dbdbb2 
+client.focused          #000000    #63576E     #ebdbb2    #b8bb26       #dbdbb2
 client.focused_inactive #000000    #282828     #ebdbb2    #282828       #282828
 client.unfocused        #000000    #282828     #ebdbb2    #282828       #282828
 client.urgent           #000000    #282828     #fb4934    #282828       #282828
 client.placeholder      #282828    #282828     #ebdbb2    #282828       #282828
-
-
-
-
 
 # Window rules
 for_window [class="^.*"] border pixel 2px
