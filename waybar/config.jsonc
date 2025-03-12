@@ -1,0 +1,90 @@
+{
+  "height": 26,
+  "reload_style_on_change": true,
+  "modules-left": ["river/tags", "custom/player"],
+  "modules-center": ["custom/clock"],
+  "modules-right": [
+    "custom/record",
+    "network",
+    "bluetooth",
+    "battery",
+    "pulseaudio",
+    "custom/time"
+  ],
+
+  "custom/time": {
+    "exec": "date +'%I:%M:%S %p'",
+    "interval": 1,
+    "tooltip": false
+  },
+
+  "custom/clock": {
+    "exec": "date +'%Y. %B. %d, %A' | tr '[:upper:]' '[:lower:]'",
+    "interval": 60,
+    "tooltip": false,
+    "on-click": "calendar",
+    "on-click-right": "events"
+  },
+
+  "battery": {
+    "bat": "BAT1",
+    "adapter": "ACAD",
+    "tooltip": false,
+    "interval": 10,
+    "states": {
+      "warning": 50,
+      "critical": 25
+    },
+    "format": "BAT {capacity}%",
+    "format-charging": "<span color=\"#9ece6a\">CHARGING</span> {capacity}%"
+  },
+
+  "network": {
+    "format-wifi": "<span color=\"#9ece6a\">WIFI {essid}</span>",
+    "format-ethernet": "<span color=\"#9ece6a\"></span>",
+    "format-disconnected": "<span color=\"#FF0000\"></span>",
+    "on-click": "$TERMINAL nmtui"
+  },
+
+  "pulseaudio": {
+    "scroll-step": 5,
+    "max-volume": 150,
+    "format": "VOL {volume}%",
+    "format-muted": "<span color=\"#FF0000\">MUTED</span>",
+    "format-bluetooth": "VOL {volume}%",
+    "on-click": "pavucontrol",
+    "tooltip": false
+  },
+
+  "bluetooth": {
+    "format": "",
+    "format-off": "󰂲 OFF",
+    "format-disabled": "󰂲 DISABLED",
+    "format-connected": "<span color=\"#2ac3de\"></span> {num_connections}",
+    "format-connected-battery": "<span color=\"#2ac3de\"></span> {num_connections}",
+    "tooltip-format-enumerate-connected": "{device_alias}",
+    "tooltip-format-enumerate-connected-battery": "{device_alias}: {device_battery_percentage}%",
+    "tooltip-format": "{device_enumerate}"
+  },
+
+  "custom/inbox": {
+    "exec": "~/.local/bin/statusbar/inbox",
+    "tooltip": false,
+    "on-click": "mailsync",
+    "signal": 4
+  },
+
+  "custom/record": {
+    "exec": "~/.local/bin/statusbar/record",
+    "tooltip": false,
+    "signal": 3
+  },
+
+  "custom/player": {
+    "exec": "~/.local/bin/statusbar/player",
+    "exec-if": "pgrep mpd",
+    "tooltip": false,
+    "on-click": "mpc toggle",
+    "signal": 1
+  }
+}
