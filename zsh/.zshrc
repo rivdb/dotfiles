@@ -55,9 +55,6 @@ eval "$(fzf --zsh --reverse)"
 
 export XDG_DATA_HOME="$HOME/.local/share"
 export PATH="$HOME/.local/bin:$PATH"
-export XDG_CURRENT_DESKTOP=river
-
-
 
 source "$XDG_CONFIG_HOME/shell/aliasrc"
 source "$XDG_CONFIG_HOME/shell/profile"
