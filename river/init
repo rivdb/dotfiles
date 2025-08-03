@@ -1,7 +1,19 @@
 #!/bin/sh
 
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=river
+export QT_QPA_PLATFORM=wayland
+export GDK_BACKEND=wayland,x11
+export CLUTTER_BACKEND=wayland
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+export XWAYLAND=1
+export DISPLAY=:0
+
+riverctl spawn "$HOME/.local/bin/wallpaper-launch.sh" &
+
 riverctl map normal Super W close
-riverctl map normal Super Return spawn "foot"
+riverctl map normal Super Return spawn "$TERMINAL"
 riverctl map normal Super+Shift Return zoom
 riverctl map normal Super F toggle-fullscreen
 riverctl map normal Super+Shift F toggle-float
@@ -11,7 +23,7 @@ riverctl map normal Super+Alt Backspace spawn "menusys lock"
 riverctl map normal Super Space spawn "pkill -USR1 waybar"
 
 riverctl map-pointer normal Super BTN_LEFT move-view
-riverctl map-pointer normal Super+Alt BTN_LEFT resize-view
+riverctl map-pointer normal Super BTN_RIGHT resize-view
 
 riverctl map normal Super bracketright focus-output right
 riverctl map normal Super bracketleft focus-output left
@@ -28,15 +40,17 @@ riverctl map normal Super+Shift J swap down
 riverctl map normal Super+Shift K swap up
 riverctl map normal Super+Shift L swap right
 
-riverctl map -repeat normal Super+Control H resize horizontal -25
-riverctl map -repeat normal Super+Control J resize vertical 25
-riverctl map -repeat normal Super+Control K resize vertical -25
-riverctl map -repeat normal Super+Control L resize horizontal 25
+# resize
 
-riverctl map normal Super+Alt H snap left
-riverctl map normal Super+Alt J snap down
-riverctl map normal Super+Alt K snap up
-riverctl map normal Super+Alt L snap right
+riverctl map -repeat normal Super+Alt L send-layout-cmd bsp-layout "--inc-vsplit .005"
+riverctl map -repeat normal Super+Alt H send-layout-cmd bsp-layout "--dec-vsplit .005"
+riverctl map -repeat normal Super+Alt J send-layout-cmd bsp-layout "--inc-hsplit .005"
+riverctl map -repeat normal Super+Alt K send-layout-cmd bsp-layout "--dec-hsplit .005"
+
+riverctl map normal Super+Control H snap left
+riverctl map normal Super+Control J snap down
+riverctl map normal Super+Control K snap up
+riverctl map normal Super+Control L snap right
 
 riverctl map normal Super A spawn "$TERMINAL pulsemixer"
 riverctl map normal Super+Shift A spawn "$TERMINAL newsraft"
@@ -56,12 +70,16 @@ riverctl map normal Super T spawn "$TERMINAL ttyper"
 riverctl map normal Super Q spawn "$BROWSER"
 riverctl map normal Super+Shift W spawn menunm
 
-riverctl map normal None Print spawn "menusc copyshot"
-riverctl map normal Shift Print spawn "menusc copyscreen"
-riverctl map normal Control+Shift Print spawn menusc
-riverctl map normal Super Print spawn menurecord
-riverctl map normal Super+Shift Print spawn "menurecord kill"
+# Regular Print Screen - quick screenshot to clipboard (no editor)
+riverctl map normal None Print spawn 'grim -g "$(slurp)" - | wl-copy'
 
+# Super + Print Screen - screenshot with Swappy editor for when you want to edit
+riverctl map normal Super Print spawn 'grim -g "$(slurp)" - | swappy -f -'
+
+# Keep your other bindings as they were:
+riverctl map normal Shift Print spawn "grim - | wl-copy" # full screen to clipboard
+
+riverctl map normal Super+Shift Print spawn "menurecord kill" # your recording kill#
 riverctl map normal None XF86DISPLAY spawn menusc
 riverctl map normal None XF86RFKill spawn airplane
 riverctl map normal None XF86AudioMedia spawn null
@@ -74,8 +92,8 @@ for mode in normal locked; do
   riverctl map $mode None XF86AudioMute spawn "pactl set-sink-mute @DEFAULT_SINK@ toggle"
 
   # Brightness controls (ThinkPad workaround: Try brightnessctl first, fallback to pkexec if needed)
-  riverctl map -repeat $mode None XF86MonBrightnessUp spawn "brightnessctl -qe s +25"
-  riverctl map -repeat $mode None XF86MonBrightnessDown spawn "brightnessctl -qe s 25-"
+  riverctl map -repeat $mode None XF86MonBrightnessUp spawn "brightnessctl -qe s +50"
+  riverctl map -repeat $mode None XF86MonBrightnessDown spawn "brightnessctl -qe s 50-"
 done
 
 riverctl declare-mode passthrough
@@ -96,11 +114,10 @@ riverctl hide-cursor timeout 5000
 riverctl hide-cursor when-typing enabled
 riverctl set-cursor-warp on-focus-change
 riverctl focus-follows-cursor always
-riverctl xcursor-theme 'Bibata-Modern-Ice' '24'
 
 riverctl rule-add ssd
 
-riverctl border-color-focused "a9b1d6"
+riverctl border-color-focused "f1be9b"
 riverctl border-color-unfocused "0x665C54"
 riverctl border-width 2
 
