@@ -9,6 +9,8 @@ export CLUTTER_BACKEND=wayland
 export ELECTRON_OZONE_PLATFORM_HINT=auto
 export XWAYLAND=1
 export DISPLAY=:0
+export QT_QPA_PLATFORMTHEME=qt5ct
+export QT_STYLE_OVERRIDE=qt5ct
 
 riverctl spawn "$HOME/.local/bin/wallpaper-launch.sh" &
 
@@ -42,10 +44,10 @@ riverctl map normal Super+Shift L swap right
 
 # resize
 
-riverctl map -repeat normal Super+Alt L send-layout-cmd bsp-layout "--inc-vsplit .005"
-riverctl map -repeat normal Super+Alt H send-layout-cmd bsp-layout "--dec-vsplit .005"
-riverctl map -repeat normal Super+Alt J send-layout-cmd bsp-layout "--inc-hsplit .005"
-riverctl map -repeat normal Super+Alt K send-layout-cmd bsp-layout "--dec-hsplit .005"
+riverctl map -repeat normal Super+Alt L send-layout-cmd bsp-layout "--inc-vsplit .010"
+riverctl map -repeat normal Super+Alt H send-layout-cmd bsp-layout "--dec-vsplit .010"
+riverctl map -repeat normal Super+Alt J send-layout-cmd bsp-layout "--inc-hsplit .010"
+riverctl map -repeat normal Super+Alt K send-layout-cmd bsp-layout "--dec-hsplit .010"
 
 riverctl map normal Super+Control H snap left
 riverctl map normal Super+Control J snap down
@@ -146,8 +148,8 @@ riverctl rule-add -app-id "mpv" tags $sticky
 
 gsettings set "org.gnome.desktop.interface" color-scheme "prefer-dark"
 gsettings set "org.gnome.desktop.interface" gtk-theme "Materia-dark"
-gsettings set "org.gnome.desktop.interface" icon-theme "Papirus-Dark"
-gsettings set "org.gnome.desktop.interface" cursor-theme "Bibata-Modern-Ice"
+gsettings set "org.gnome.desktop.interface" icon-theme "McMojave-circle-dark"
+gsettings set "org.gnome.desktop.interface" cursor-theme "McMojave-Cursors"
 
 dbus-update-activation-environment \
   SEATD_SOCK \
