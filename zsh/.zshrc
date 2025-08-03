@@ -1,13 +1,19 @@
 # .zshrc
-fpath+=($HOME/.zsh/pure)
+# fpath+=($HOME/.zsh/pure)
+alias smbmap='/usr/bin/smbmap.py'
+# autoload -U promptinit
+# promptinit
+# PURE_PROMPT_SYMBOL=''
+# PURE_PROMPT_VICMD_SYMBOL=''
+# prompt pure
 
-autoload -U promptinit
-promptinit
-PURE_PROMPT_SYMBOL=''
-PURE_PROMPT_VICMD_SYMBOL=''
-prompt pure
+# Custom hostname in prompt
+PS1='[%F{green}%n@arch%f %F{blue}%~%f]$ '
 
+export QT_QPA_PLATFORMTHEME=qt5ct
+export _JAVA_AWT_WM_NONREPARENTING=1
 export XDG_CONFIG_HOME="$HOME/.config"
+export PATH="$HOME/.emacs.d/bin:$PATH"
 
 autoload -Uz compinit && compinit -C
 zstyle ':completion:*' menu select
