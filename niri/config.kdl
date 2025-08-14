@@ -1,0 +1,269 @@
+spawn-at-startup "xwayland-satellite"
+
+environment {
+  DISPLAY ":0"
+}
+
+input {
+    keyboard {
+
+        repeat-rate 50
+        repeat-delay 200
+        xkb {
+
+            // Add your keyboard layout preferences here if needed
+        }
+        numlock
+    }
+
+    touchpad {
+        tap
+        // accel-speed 0.35
+        // disabled-on-external-mouse
+    }
+
+    mouse {
+        // accel-speed 0.2
+    }
+
+    // Equivalent to River's focus-follows-cursor always
+    focus-follows-mouse max-scroll-amount="0%"
+    
+    // Equivalent to River's set-cursor-warp on-focus-change
+    warp-mouse-to-focus
+}
+
+// Output configuration - uncomment and adjust as needed
+/-output "eDP-1" {
+    mode "1920x1080@120.030"
+    scale 1.0
+    position x=0 y=0
+}
+
+layout {
+    gaps 16
+    background-color "transparent"
+    center-focused-column "never"
+    
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+    
+    default-column-width { proportion 0.5; }
+
+    focus-ring {
+        width 2
+        active-color "#f1be9b"    // From your River focused color
+        inactive-color "#665C54"  // From your River unfocused color
+    }
+
+    border {
+        off
+    }
+
+    // Enable shadows for better visual separation
+    shadow {
+        on
+        softness 15
+        spread 2
+        offset x=0 y=3
+        color "#0007"
+    }
+}
+
+// Startup applications - equivalent to your River executes section
+spawn-at-startup "mako"
+spawn-at-startup "pipewire"
+spawn-at-startup "kanshi"
+spawn-at-startup "wlsunset -s 21:00 -S 07:00"
+spawn-at-startup "swayidle -w timeout 900 'wlopm --off \"*\"' resume 'wlopm --on \"*\"' before-sleep 'lock'"
+spawn-at-startup "mpd"
+spawn-at-startup "$HOME/.local/bin/wallpaper-launch.sh"
+spawn-at-startup "qs"
+// Equivalent to River's hide-cursor settings
+// Note: Niri handles cursor hiding automatically
+
+prefer-no-csd
+
+screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
+
+animations {
+    // Keep animations on but subtle
+    slowdown 0.8
+}
+
+// Window rules
+window-rule {
+    match app-id=r#"^org\.wezfurlong\.wezterm$"#
+    default-column-width {}
+    geometry-corner-radius 20
+    clip-to-geometry true
+}
+
+window-rule {
+    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    open-floating true
+}
+
+// MPV floating and sticky-like behavior (always visible)
+window-rule {
+    match app-id="mpv"
+    open-floating true
+}
+
+binds {
+    // Help overlay
+    Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // Core window management - matching River's Super+W, Super+Return
+    Mod+W { close-window; }
+    Mod+Return { spawn "ghostty"; }
+    Mod+Shift+Return { center-column; } // Similar to River's zoom
+    
+    // Fullscreen and floating - matching River's Super+F, Super+Shift+F
+    Mod+F { maximize-column; }
+    Mod+Shift+F { fullscreen-window; }
+    Mod+Shift+V { toggle-window-floating; } // Changed from V to Shift+V for consistency
+    
+    // Menu systems - matching River's bindings
+    Mod+BackSpace { spawn "menusys"; }
+    Mod+Shift+BackSpace { spawn "menusys"; }
+    Mod+Alt+BackSpace { spawn "menusys lock"; }
+    
+    // Waybar toggle
+    Mod+Space { spawn "pkill -USR1 waybar"; }
+
+    // Application launchers - matching River's letter bindings
+    Mod+A { spawn "$TERMINAL pulsemixer"; }
+    Mod+Shift+A { spawn "$TERMINAL newsraft"; }
+    Mod+C { spawn "menucalc"; }
+    Mod+Shift+C { spawn "camtoggle"; }
+    Mod+D { spawn "fuzzel"; }
+    Mod+Shift+D { spawn "menubm"; }
+    Mod+E { spawn "$TERMINAL aerc"; }
+    Mod+I { spawn "$TERMINAL htop"; }
+    Mod+Shift+I { spawn "menubt"; }
+    Mod+M { spawn "menumpd"; }
+    Mod+N { spawn "$TERMINAL notes n"; }
+    Mod+R { spawn "$TERMINAL lf"; }
+    Mod+T { spawn "$TERMINAL ttyper"; }
+    Mod+Q { spawn "$BROWSER"; }
+    Mod+Shift+W { spawn "menunm"; }
+
+    // Focus movement - HJKL vim-style like River
+    Mod+H { focus-column-left; }
+    Mod+J { focus-window-down; }
+    Mod+K { focus-window-up; }
+    Mod+L { focus-column-right; }
+    
+    // Window/column movement - matching River's Shift+HJKL
+    Mod+Shift+H { move-column-left; }
+    Mod+Shift+J { move-window-down; }
+    Mod+Shift+K { move-window-up; }
+    Mod+Shift+L { move-column-right; }
+    
+    // Resize operations - matching River's Alt+HJKL pattern
+    Mod+Alt+H { set-column-width "-10%"; }
+    Mod+Alt+L { set-column-width "+10%"; }
+    Mod+Alt+J { set-window-height "+10%"; }
+    Mod+Alt+K { set-window-height "-10%"; }
+    
+    // Snapping equivalents - using Ctrl+HJKL like River
+    Mod+Ctrl+H { move-column-to-first; }
+    Mod+Ctrl+L { move-column-to-last; }
+    Mod+Ctrl+J { move-window-down; }
+    Mod+Ctrl+K { move-window-up; }
+
+    // Monitor focus - using bracket keys like River
+    Mod+BracketLeft { focus-monitor-left; }
+    Mod+BracketRight { focus-monitor-right; }
+    Mod+Shift+BracketLeft { move-column-to-monitor-left; }
+    Mod+Shift+BracketRight { move-column-to-monitor-right; }
+
+    // Screenshots - matching River's Print key bindings
+    Print { spawn "grim -g \"$(slurp)\" - | wl-copy"; }
+    Mod+Print { spawn "grim -g \"$(slurp)\" - | swappy -f -"; }
+    Shift+Print { spawn "grim - | wl-copy"; }
+    Mod+Shift+Print { spawn "menurecord kill"; }
+
+    // Function keys and media controls
+    XF86AudioRaiseVolume allow-when-locked=true { spawn "volume high"; }
+    XF86AudioLowerVolume allow-when-locked=true { spawn "volume low"; }
+    XF86AudioMute allow-when-locked=true { spawn "volume mute"; }
+    XF86MonBrightnessUp allow-when-locked=true { spawn "bright up"; }
+    XF86MonBrightnessDown allow-when-locked=true { spawn "bright down"; }
+    
+    // Alternative volume/brightness with +/- keys like River
+    Mod+Equal { spawn "volume high"; }
+    Mod+Minus { spawn "volume low"; }
+    Mod+Shift+Equal { spawn "volume higher"; }
+    Mod+Shift+Minus { spawn "volume lower"; }
+    Mod+Shift+M { spawn "volume mute"; }
+    Alt+Equal { spawn "bright up"; }
+    Alt+Minus { spawn "bright down"; }
+    
+    // Special keys
+    XF86Display { spawn "menusc"; }
+    XF86RFKill { spawn "airplane"; }
+
+    // Workspace navigation - numbers 1-9 like River
+    Mod+1 { focus-workspace 1; }
+    Mod+2 { focus-workspace 2; }
+    Mod+3 { focus-workspace 3; }
+    Mod+4 { focus-workspace 4; }
+    Mod+5 { focus-workspace 5; }
+    Mod+6 { focus-workspace 6; }
+    Mod+7 { focus-workspace 7; }
+    Mod+8 { focus-workspace 8; }
+    Mod+9 { focus-workspace 9; }
+    
+    // Move windows to workspaces - Shift+numbers like River
+    Mod+Shift+1 { move-column-to-workspace 1; }
+    Mod+Shift+2 { move-column-to-workspace 2; }
+    Mod+Shift+3 { move-column-to-workspace 3; }
+    Mod+Shift+4 { move-column-to-workspace 4; }
+    Mod+Shift+5 { move-column-to-workspace 5; }
+    Mod+Shift+6 { move-column-to-workspace 6; }
+    Mod+Shift+7 { move-column-to-workspace 7; }
+    Mod+Shift+8 { move-column-to-workspace 8; }
+    Mod+Shift+9 { move-column-to-workspace 9; }
+    
+    // Toggle view of workspaces - Alt+numbers like River
+    Mod+Alt+1 { focus-workspace 1; }
+    Mod+Alt+2 { focus-workspace 2; }
+    Mod+Alt+3 { focus-workspace 3; }
+    Mod+Alt+4 { focus-workspace 4; }
+    Mod+Alt+5 { focus-workspace 5; }
+    Mod+Alt+6 { focus-workspace 6; }
+    Mod+Alt+7 { focus-workspace 7; }
+    Mod+Alt+8 { focus-workspace 8; }
+    Mod+Alt+9 { focus-workspace 9; }
+
+    // Scratch workspace equivalent - using 0 like River
+    // Note: Niri doesn't have the exact same scratch concept, but we can use workspace 10
+    Mod+0 { focus-workspace 10; }
+    Mod+Shift+0 { move-column-to-workspace 10; }
+    
+    // Sticky-like behavior - using S key like River
+    // In Niri, we can use floating + moving to all workspaces as an alternative
+    Mod+S { toggle-window-floating; }
+
+    // Column manipulation (unique to Niri)
+    Mod+Comma { consume-window-into-column; }
+    Mod+Period { expel-window-from-column; }
+    
+    // Preset width cycling - using R like original Niri config
+    Mod+Shift+R { switch-preset-column-width; }
+    Mod+Ctrl+R { switch-preset-window-height; }
+    
+    // Overview mode
+    Mod+O { toggle-overview; }
+    
+    // Passthrough mode equivalent - using Escape like River
+    Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
+    
+    // Quit
+    Mod+Shift+E { quit; }
+}
